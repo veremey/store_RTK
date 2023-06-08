@@ -6,7 +6,9 @@ export interface ProductsState {
 }
 
 const initialState: ProductsState = {
-	products: {},
+	products: {
+		'123': { name: 'Fake Product' },
+	},
 }
 
 const productsSlice = createSlice({
