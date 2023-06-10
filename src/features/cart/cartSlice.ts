@@ -28,7 +28,6 @@ export const getNumItems = createSelector(
 	(state: RootState) => state.cart.items,
 	(items) => {
 		let numItems = 0
-		console.log('getNums') // TODO
 
 		for (const id in items) {
 			numItems = items[id]
