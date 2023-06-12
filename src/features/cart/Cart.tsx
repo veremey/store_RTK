@@ -2,22 +2,31 @@ import React from 'react'
 import styles from './Cart.module.css'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { getTotalPrice, removeFromCart, updateQuantity } from './cartSlice'
+import classNames from 'classnames'
+import { checkout } from '../../../lessons/18-thunks-basic/cartSlice'
 
 export function Cart() {
 	const dispatch = useAppDispatch()
 	const products = useAppSelector((state) => state.products.products)
 	const items = useAppSelector((state) => state.cart.items)
 	const totalPrice = useAppSelector(getTotalPrice)
+	const checkoutState = useAppSelector((state) => state.cart.checkoutState)
 
 	const onQuantityChanged = (e: React.FocusEvent<HTMLInputElement>, id: string) => {
 		const quantity = Number(e.target.value) || 0
 		dispatch(updateQuantity({ id, quantity }))
 	}
 
+	const tableClasses = classNames({
+		[styles.table]: true,
+		[styles.checkoutError]: checkoutState === 'ERROR',
+		[styles.checkoutLoading]: checkoutState === 'LOADING',
+	})
+
 	return (
 		<main className='page'>
 			<h1>Shopping Cart</h1>
-			<table className={styles.table}>
+			<table className={tableClasses}>
 				<thead>
 					<tr>
 						<th>Product</th>
