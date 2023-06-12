@@ -1,9 +1,8 @@
 import React from 'react'
 import styles from './Cart.module.css'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { getTotalPrice, removeFromCart, updateQuantity } from './cartSlice'
+import { checkout, getTotalPrice, removeFromCart, updateQuantity } from './cartSlice'
 import classNames from 'classnames'
-import { checkout } from '../../../lessons/18-thunks-basic/cartSlice'
 
 export function Cart() {
 	const dispatch = useAppDispatch()
@@ -15,6 +14,12 @@ export function Cart() {
 	const onQuantityChanged = (e: React.FocusEvent<HTMLInputElement>, id: string) => {
 		const quantity = Number(e.target.value) || 0
 		dispatch(updateQuantity({ id, quantity }))
+	}
+
+	const onCheckout = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+
+		dispatch(checkout())
 	}
 
 	const tableClasses = classNames({
@@ -67,7 +72,7 @@ export function Cart() {
 					</tr>
 				</tfoot>
 			</table>
-			<form>
+			<form onSubmit={onCheckout}>
 				<button className={styles.button} type='submit'>
 					Checkout
 				</button>
